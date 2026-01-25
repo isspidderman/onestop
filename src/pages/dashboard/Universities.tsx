@@ -239,9 +239,12 @@ const Universities = () => {
     setShowApplyModal(false);
   };
 
-  const applicationFeePerUniversity = 20;
-  const platformFee = 10;
-  const totalApplicationFees = selectedUniversities.length * applicationFeePerUniversity;
+  const platformFeePerApplication = 20;
+  const totalApplicationFees = selectedUniversities.reduce((acc, id) => {
+    const uni = universities.find((u) => u.id === id);
+    return acc + (uni?.fee || 0);
+  }, 0);
+  const platformFee = selectedUniversities.length * platformFeePerApplication;
   const totalFee = totalApplicationFees + platformFee;
 
   return (
@@ -451,11 +454,11 @@ const Universities = () => {
 
                 <div className="p-4 rounded-lg bg-secondary/50 border border-border space-y-3">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Application Fee ({selectedUniversities.length} × ₹{applicationFeePerUniversity})</span>
+                    <span className="text-muted-foreground">Application Fees (Sum of {selectedUniversities.length} universities)</span>
                     <span className="text-foreground">₹{totalApplicationFees}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">Platform Fee</span>
+                    <span className="text-muted-foreground">Platform Fee ({selectedUniversities.length} × ₹{platformFeePerApplication})</span>
                     <span className="text-foreground">₹{platformFee}</span>
                   </div>
                   <div className="border-t border-border pt-3 flex items-center justify-between">
