@@ -63,6 +63,7 @@ interface StudentContextType {
   updateApplicationStatus: (id: string, status: Application['status']) => void;
   addDocument: (document: Document) => void;
   removeDocument: (id: string) => void;
+  resetStudent: () => void;
 }
 
 const defaultProfile: StudentProfile = {
@@ -154,6 +155,15 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
     setDocuments(prev => prev.filter(doc => doc.id !== id));
   };
 
+  const resetStudent = () => {
+    setProfile(defaultProfile);
+    setApplications([]);
+    setDocuments([]);
+    localStorage.removeItem('onestop_profile');
+    localStorage.removeItem('onestop_applications');
+    localStorage.removeItem('onestop_documents');
+  };
+
   return (
     <StudentContext.Provider
       value={{
@@ -165,6 +175,7 @@ export const StudentProvider: React.FC<{ children: React.ReactNode }> = ({ child
         updateApplicationStatus,
         addDocument,
         removeDocument,
+        resetStudent,
       }}
     >
       {children}
