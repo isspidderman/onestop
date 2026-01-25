@@ -5,6 +5,7 @@ import { useStudent } from '@/contexts/StudentContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
 import {
   User,
   FileText,
@@ -15,7 +16,41 @@ import {
   Clock,
   AlertCircle,
   FolderOpen,
+  GraduationCap,
+  CalendarClock,
 } from 'lucide-react';
+
+// Mock upcoming exams data
+const upcomingExams = [
+  {
+    id: 'jee-main-2025',
+    name: 'JEE Main 2025',
+    date: '2025-04-10',
+    type: 'exam',
+    category: 'Engineering',
+  },
+  {
+    id: 'neet-2025',
+    name: 'NEET UG 2025',
+    date: '2025-05-04',
+    type: 'exam',
+    category: 'Medical',
+  },
+  {
+    id: 'cuet-2025',
+    name: 'CUET UG 2025',
+    date: '2025-05-15',
+    type: 'exam',
+    category: 'Central Universities',
+  },
+  {
+    id: 'bitsat-2025',
+    name: 'BITSAT 2025',
+    date: '2025-05-22',
+    type: 'exam',
+    category: 'Engineering',
+  },
+];
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -188,6 +223,110 @@ const Dashboard = () => {
                   <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </Link>
               ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Upcoming Exams & Deadlines */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <CalendarClock className="w-5 h-5 text-primary" />
+              Upcoming Exams & Deadlines
+            </CardTitle>
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/dashboard/deadlines">View All</Link>
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-4">
+              {/* Upcoming Exams */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                  <GraduationCap className="w-4 h-4" />
+                  Upcoming Exams
+                </h4>
+                <div className="space-y-2">
+                  {upcomingExams.slice(0, 3).map((exam) => {
+                    const examDate = new Date(exam.date);
+                    const today = new Date();
+                    const daysLeft = Math.ceil((examDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+                    
+                    return (
+                      <div
+                        key={exam.id}
+                        className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                            <Calendar className="w-4 h-4 text-orange-600" />
+                          </div>
+                          <div>
+                            <p className="font-medium text-sm text-foreground">{exam.name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {examDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                            </p>
+                          </div>
+                        </div>
+                        <Badge variant={daysLeft <= 30 ? "destructive" : "secondary"} className="text-xs">
+                          {daysLeft} days
+                        </Badge>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Latest Application Deadline */}
+              <div className="space-y-3">
+                <h4 className="text-sm font-medium text-muted-foreground flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  Your Application Deadlines
+                </h4>
+                {applications.length === 0 ? (
+                  <div className="p-4 rounded-lg bg-secondary/30 text-center">
+                    <p className="text-sm text-muted-foreground">No applications yet</p>
+                    <Button variant="link" size="sm" asChild className="mt-1">
+                      <Link to="/dashboard/universities">Apply Now</Link>
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {applications.slice(0, 3).map((app) => {
+                      const appliedDate = new Date(app.appliedDate);
+                      const deadlineDate = new Date(appliedDate);
+                      deadlineDate.setDate(deadlineDate.getDate() + 30); // Mock deadline: 30 days after application
+                      const today = new Date();
+                      const daysLeft = Math.ceil((deadlineDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+                      
+                      return (
+                        <div
+                          key={app.id}
+                          className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 hover:bg-secondary/50 transition-colors"
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                              <School className="w-4 h-4 text-purple-600" />
+                            </div>
+                            <div>
+                              <p className="font-medium text-sm text-foreground">{app.universityName}</p>
+                              <p className="text-xs text-muted-foreground">
+                                Deadline: {deadlineDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                              </p>
+                            </div>
+                          </div>
+                          <Badge 
+                            variant={daysLeft <= 7 ? "destructive" : daysLeft <= 14 ? "outline" : "secondary"} 
+                            className="text-xs"
+                          >
+                            {daysLeft > 0 ? `${daysLeft} days` : 'Expired'}
+                          </Badge>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>
