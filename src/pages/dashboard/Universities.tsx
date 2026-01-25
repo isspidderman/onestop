@@ -259,10 +259,16 @@ const Universities = () => {
             </p>
           </div>
           {selectedUniversities.length > 0 && (
-            <Button onClick={() => setShowApplyModal(true)}>
-              Apply to {selectedUniversities.length} Selected
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={() => setSelectedUniversities([])}>
+                <X className="w-4 h-4 mr-2" />
+                Deselect All
+              </Button>
+              <Button onClick={() => setShowApplyModal(true)}>
+                Apply to {selectedUniversities.length} Selected
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
           )}
         </div>
 
