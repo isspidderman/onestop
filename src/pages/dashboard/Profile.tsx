@@ -31,19 +31,13 @@ const Profile = () => {
     });
   };
 
-  const InputField = ({
-    label,
-    field,
+  const renderInput = (
+    label: string,
+    field: string,
     type = 'text',
     placeholder = '',
-    required = false,
-  }: {
-    label: string;
-    field: string;
-    type?: string;
-    placeholder?: string;
-    required?: boolean;
-  }) => (
+    required = false
+  ) => (
     <div className="space-y-2">
       <Label htmlFor={field}>
         {label}
@@ -108,8 +102,8 @@ const Profile = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <InputField label="Full Name" field="fullName" placeholder="Enter your full name" required />
-                  <InputField label="Date of Birth" field="dateOfBirth" type="date" required />
+                  {renderInput('Full Name', 'fullName', 'text', 'Enter your full name', true)}
+                  {renderInput('Date of Birth', 'dateOfBirth', 'date', '', true)}
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -126,14 +120,14 @@ const Profile = () => {
                       <option value="other">Other</option>
                     </select>
                   </div>
-                  <InputField label="Phone Number" field="phone" type="tel" placeholder="+91 98765 43210" required />
+                  {renderInput('Phone Number', 'phone', 'tel', '+91 98765 43210', true)}
                 </div>
-                <InputField label="Email Address" field="email" type="email" placeholder="you@example.com" required />
-                <InputField label="Address" field="address" placeholder="Enter your address" />
+                {renderInput('Email Address', 'email', 'email', 'you@example.com', true)}
+                {renderInput('Address', 'address', 'text', 'Enter your address')}
                 <div className="grid sm:grid-cols-3 gap-4">
-                  <InputField label="City" field="city" placeholder="City" />
-                  <InputField label="State" field="state" placeholder="State" />
-                  <InputField label="Pincode" field="pincode" placeholder="Pincode" />
+                  {renderInput('City', 'city', 'text', 'City')}
+                  {renderInput('State', 'state', 'text', 'State')}
+                  {renderInput('Pincode', 'pincode', 'text', 'Pincode')}
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
@@ -200,11 +194,11 @@ const Profile = () => {
                         <option value="other">Other</option>
                       </select>
                     </div>
-                    <InputField label="School Name" field="tenthSchool" placeholder="Enter school name" />
+                    {renderInput('School Name', 'tenthSchool', 'text', 'Enter school name')}
                   </div>
                   <div className="grid sm:grid-cols-2 gap-4">
-                    <InputField label="Year of Passing" field="tenthYear" placeholder="2020" />
-                    <InputField label="Percentage / CGPA" field="tenthPercentage" placeholder="95%" />
+                    {renderInput('Year of Passing', 'tenthYear', 'text', '2020')}
+                    {renderInput('Percentage / CGPA', 'tenthPercentage', 'text', '95%')}
                   </div>
                 </CardContent>
               </Card>
@@ -232,11 +226,11 @@ const Profile = () => {
                         <option value="other">Other</option>
                       </select>
                     </div>
-                    <InputField label="School Name" field="twelfthSchool" placeholder="Enter school name" />
+                    {renderInput('School Name', 'twelfthSchool', 'text', 'Enter school name')}
                   </div>
                   <div className="grid sm:grid-cols-3 gap-4">
-                    <InputField label="Year of Passing" field="twelfthYear" placeholder="2022" />
-                    <InputField label="Percentage / CGPA" field="twelfthPercentage" placeholder="90%" />
+                    {renderInput('Year of Passing', 'twelfthYear', 'text', '2022')}
+                    {renderInput('Percentage / CGPA', 'twelfthPercentage', 'text', '90%')}
                     <div className="space-y-2">
                       <Label htmlFor="stream">Stream</Label>
                       <select
@@ -267,14 +261,14 @@ const Profile = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <InputField label="JEE Main Rank" field="jeeMainRank" placeholder="Enter your JEE Main rank" />
-                  <InputField label="JEE Advanced Rank" field="jeeAdvancedRank" placeholder="Enter your JEE Advanced rank" />
+                  {renderInput('JEE Main Rank', 'jeeMainRank', 'text', 'Enter your JEE Main rank')}
+                  {renderInput('JEE Advanced Rank', 'jeeAdvancedRank', 'text', 'Enter your JEE Advanced rank')}
                 </div>
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <InputField label="NEET Rank" field="neetRank" placeholder="Enter your NEET rank" />
-                  <InputField label="CUET Score" field="cuetScore" placeholder="Enter your CUET score" />
+                  {renderInput('NEET Rank', 'neetRank', 'text', 'Enter your NEET rank')}
+                  {renderInput('CUET Score', 'cuetScore', 'text', 'Enter your CUET score')}
                 </div>
-                <InputField label="Other Exams" field="otherExams" placeholder="Enter other exam scores (e.g., BITSAT, VITEEE)" />
+                {renderInput('Other Exams', 'otherExams', 'text', 'Enter other exam scores (e.g., BITSAT, VITEEE)')}
               </CardContent>
             </Card>
           </TabsContent>
