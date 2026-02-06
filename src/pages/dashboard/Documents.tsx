@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
+import DigiLockerModal from '@/components/documents/DigiLockerModal';
 import {
   FolderOpen,
   Upload,
@@ -17,6 +18,7 @@ import {
   Plus,
   Shield,
   Lock,
+  Landmark,
 } from 'lucide-react';
 
 const documentTypes = [
@@ -32,8 +34,43 @@ const documentTypes = [
 const Documents = () => {
   const { documents, addDocument, removeDocument } = useStudent();
   const [dragActive, setDragActive] = useState(false);
+  const [digiLockerOpen, setDigiLockerOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  const handleDigiLockerFetch = () => {
+    // Add mock documents from DigiLocker
+    const digiLockerDocs: Document[] = [
+      {
+        id: 'digi_' + Math.random().toString(36).substr(2, 9),
+        name: 'Class X Marksheet (CBSE)',
+        type: 'application/pdf',
+        uploadedDate: new Date().toISOString().split('T')[0],
+        size: '245 KB',
+      },
+      {
+        id: 'digi_' + Math.random().toString(36).substr(2, 9),
+        name: 'Class XII Marksheet (CBSE)',
+        type: 'application/pdf',
+        uploadedDate: new Date().toISOString().split('T')[0],
+        size: '312 KB',
+      },
+      {
+        id: 'digi_' + Math.random().toString(36).substr(2, 9),
+        name: 'Aadhaar Card',
+        type: 'application/pdf',
+        uploadedDate: new Date().toISOString().split('T')[0],
+        size: '156 KB',
+      },
+    ];
+
+    digiLockerDocs.forEach((doc) => addDocument(doc));
+
+    toast({
+      title: 'Documents Imported',
+      description: 'Documents from DigiLocker have been added to your DocuSafe.',
+    });
+  };
 
   const getFileIcon = (type: string) => {
     if (type.includes('image')) return <Image className="w-6 h-6 text-blue-600" />;
@@ -112,11 +149,24 @@ const Documents = () => {
               Upload and store your documents securely. Reuse them for all your applications.
             </p>
           </div>
-          <Button onClick={() => fileInputRef.current?.click()}>
-            <Plus className="w-4 h-4 mr-2" />
-            Upload Document
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setDigiLockerOpen(true)}>
+              <Landmark className="w-4 h-4 mr-2" />
+              DigiLocker
+            </Button>
+            <Button onClick={() => fileInputRef.current?.click()}>
+              <Plus className="w-4 h-4 mr-2" />
+              Upload Document
+            </Button>
+          </div>
         </div>
+
+        {/* DigiLocker Modal */}
+        <DigiLockerModal
+          open={digiLockerOpen}
+          onOpenChange={setDigiLockerOpen}
+          onDocumentsFetched={handleDigiLockerFetch}
+        />
 
         {/* Security Notice */}
         <Card className="border-green-200 bg-green-50/50">
