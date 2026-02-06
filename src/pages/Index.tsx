@@ -123,14 +123,6 @@ const Index = () => {
 
             <div className="flex items-center justify-center gap-8 mt-12 text-sm text-muted-foreground animate-fade-up" style={{ animationDelay: '0.4s' }}>
               <div className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-primary" />
-                <span>10,000+ Students</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <GraduationCap className="w-5 h-5 text-primary" />
-                <span>500+ Universities</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-primary" />
                 <span>Free to Start</span>
               </div>
